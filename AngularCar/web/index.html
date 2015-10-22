@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html ng-app="DemoApp" >
+    <head lang="en">
+        <meta charset="UTF-8">
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="vendor/bootstrap.css">
+        <script src="vendor/angular.js"></script>
+        <script src="vendor/angular-route.js"></script>
+        <script src="vendor/angular-locale_da-dk.js"></script>
+        <script src="js/app.js"></script>
+        <title>Car Demo App</title>
+    </head>
+    <body>
+        <div class="container">
+
+            <div class="navbar-header">
+            </div>
+            <ul class="nav nav-tabs">
+                <li><a href="#AllCars">All Cars</a></li>
+                <li><a href="#AddCar">Add Car</a></li>
+            </ul>
+            <div ng-view></div>
+
+            <script type="text/ng-template" id="AllCars.html">
+                <div ng-controller="ViewCarController as ctrl"></div>
+                <h1>{{ctrl.title}}</h1>
+                <h2>Number of cars: {{ctrl.cars.length}}</h2>
+                <input type="search" ng-model="carfilter" placeholder="Filter cars">
+                <div row>
+                    <div class="col-md-9">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <td>ID</td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'year';
+                                                reverse = !reverse">Year</a></td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'registered';
+                                                reverse = !reverse">Registered</a></td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'make';
+                                                reverse = !reverse">Make</a></td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'model';
+                                                reverse = !reverse">Model</a></td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'description';
+                                                reverse = !reverse">Description</a></td>
+                                    <td><a href="" ng-click="ctrl.predicate = 'price';
+                                                reverse = !reverse">Price</a></td>
+                                    <td><a>Action</a></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="car in ctrl.cars| filter: carfilter | orderBy:predicate:reverse">
+                                    <td>{{car.id}}</td>
+                                    <td>{{car.year}}</td>
+                                    <td>{{car.registered| date }}</td>
+                                    <td>{{car.make}}</td>
+                                    <td>{{car.model}}</td>
+                                    <td>{{car.description}}</td>
+                                    <td>{{car.price| currency}}</td>
+                                    <td>
+                                        <a href="#AddCar" ng-click="ctrl.edit(car.id)">edit</a> |
+                                        <a href="#AllCars" ng-click="ctrl.delete(car.id)">delete</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="AddCar.html">
+                
+            <div class="col-md-3" style="border: thin lightblue solid; border-radius: 5px;padding: 1em;">
+                <h3>New Car</h3>
+                <hr>
+                <br>
+                <input type="hidden" ng-model="ctrl.feedback.id"/>
+                Year: <input type="text" ng-model="ctrl.feedback.year"/>
+                <br>
+                <br>
+                Registered: <input type="date" date-format="dd/MM/yyyy" ng-model="ctrl.feedback.registered"/>
+                <br>
+                <br>
+                Make: <input type="text" ng-model="ctrl.feedback.make"/>
+                <br>
+                <br>
+                Model: <input type="text" ng-model="ctrl.feedback.model"/>
+                <br>
+                <br>
+                Description: <input type="text" ng-model="ctrl.feedback.description"/>
+                <br>
+                <br>
+                Price: <input type="text" ng-model="ctrl.feedback.price"/>
+                <br>
+                <br>
+                <a href="#AllCars" class="button" ng-click="ctrl.add()">Add Car</a> 
+            </div>
+            </script>
+        </div>
+    </body>
+</html>
